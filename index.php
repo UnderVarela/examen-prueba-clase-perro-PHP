@@ -15,16 +15,16 @@ class Perro {
 private int $idPerro;
 private string $nombre;
 private ?string $microchip;
-private string $sexo = 'F'; // F para hembras y M para machos
+private string $sexo; // F para hembras y M para machos
 private ?DateTime $fechaNacimiento;
 private ?Perro $padre;
 private ?Perro $madre;
 
-public function __construct ($idPerro,string $nombre, string $sexo = SEXO_PERRO['f'], ?DateTime $fechaNacimiento =  null) {
+public function __construct ($idPerro,string $nombre, string $sexo = SEXO_PERRO['h'], ?DateTime $fechaNacimiento =  null) {
   
   $this -> idPerro = $idPerro;
   $this -> nombre = $nombre;
-  $this -> sexo = SEXO_KEYS[0];
+  $this -> sexo = SEXO_KEYS[1];
   $this -> fechaNacimiento = $fechaNacimiento;
 }
 
@@ -50,23 +50,32 @@ function setPadre (Perro $perro) : void {
   $this-> padre = $perro;
 }
 
+function setMadre (Perro $perro) : void {
+  $this-> madre = $perro;
+}
+
 function __toString(): string {
-  return sprintf("ID: %d <br> Nombre Perro: %s <br> Sexo: %s <br> Fecha de nacimiento: %s <br>", 
+  return sprintf("ID: %d <br> Nombre Perro: %s <br> Sexo: %s <br> Fecha de nacimiento: %s <br>Padre: <blockquote>%s</blockquote>Madre: <blockquote>%s</blockquote>", 
   $this->idPerro, 
   $this->nombre,
   $this->getSexo(),
-  $this -> fechaNacimiento?->format('d/m/Y')??'Desconocida'
+  $this -> fechaNacimiento?->format('d/m/Y')??'Desconocida',
+  $this->padre??'Desconocido',
+  $this->madre??'Desconocida'
 );
 
 }
 
 }
-$Perro1 = new Perro (01, "Gus", SEXO_KEYS[1], null);
-echo $Perro1;
+
+$papi = new Perro (01, "Gus", SEXO_KEYS[1], new DateTime());
+$mami = new Perro (05, "Licra", SEXO_KEYS[0], null);
 
 
 $hija = new Perro(22, 'Flufy', SEXO_KEYS[0], null);
-echo $hija;
+$hija->setPadre($papi);
+$hija->setMadre($mami);
+// echo $hija;
 
 
 ?>
